@@ -76,8 +76,6 @@ class Attendance:
         local_attendance = Attendance(self.event_type)
         try: 
             with open(filename) as f:
-                at_names = False
-
                 # Skip the lines above the whitespace, since they are not names
                 next(f) # skip the top part header line
 

@@ -5,11 +5,12 @@ Filename     : attendance.py
 Author       : Levin Weinstein
 Organization : USF CS212 Spring 2021
 Purpose      : Convert a directory full of attendance lists to a single, aggregated attendance sheet
-Usage        : ./attendance.py ${ATTENDANCE_DIRECTORY} > ${OUTPUT_FILE}
+Usage        : ./attendance.py --directory="DIRECTORY" --event=[lecture|lab] > ${OUTPUT_FILE}
 """
 
 import os
 import sys
+import argparse
 
 class Attendee:
     """ A class for an individual Attendee, with a name and an email"""
@@ -52,10 +53,11 @@ class Attendance:
         - merge another Attendance set
     """
 
-    def __init__(self):
+    def __init__(self, event_type=""):
         """ An initializer for the Attendance """ 
         self._attendees = set()
-    
+        self.event_type = event_type
+
     def add_attendee(self, line):
         """ Method to add an attendee 
         
@@ -71,23 +73,29 @@ class Attendance:
 
         :param filename: the name of the file
         """
-        local_attendance = Attendance()
-        try: 
-            with open(filename) as f:
-                at_names = False
+        local_attendance = Attendance(self.event_type)
+        #try: 
+        with open(filename) as f:
+            at_names = False
 
-                # Skip the lines above the whitespace, since they are not names
-                while next(f).strip() != "":
-                    continue
-                
-                next(f) # Skip the header line with the title "Name", "Email", etc
+            # Skip the lines above the whitespace, since they are not names
+            next(f) # skip the top part header line
 
-                for line in f:
-                    local_attendance.add_attendee(line)
+            _, topic, _, _, _, _, _, _ = next(f).split(',')
+            print(topic, file=sys.stderr)
 
-            self.merge(local_attendance)
-        except:
-            print(f"Error parsing file: {filename}")
+            if self.event_type not in topic.lower():
+                print(f"Wrong event type. Skipping {filename}", file=sys.stderr)
+                return           
+            next(f) # Skip the blank line
+            next(f) # Skip the header line with the title "Name", "Email", etc
+
+            for line in f:
+                local_attendance.add_attendee(line)
+
+        self.merge(local_attendance)
+        #except:
+        #    print(f"Error parsing file: {filename}")
 
     
     def add_all_files(self, root_directory):
@@ -122,11 +130,12 @@ class Attendance:
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2:
-        print("Usage: ./attendance.py ${ATTENDANCE DIRECTORY}")
-    else:
-        directory = sys.argv[1]
+    parser = argparse.ArgumentParser(description="Convert a directory full of attendance lists to a single, aggregated attendance sheet")
+    parser.add_argument("-e", "--event", help="The event type. Can be either lecture or lab", required=True)
+    parser.add_argument("-d", "--directory", help="The directory within which to parse.", required=True)
 
-        attendance = Attendance()
-        attendance.add_all_files(directory)
-        print(attendance)
+    arguments = parser.parse_args()
+    attendance = Attendance(arguments.event)
+    attendance.add_all_files(arguments.directory)
+
+    print(arguments.directory)

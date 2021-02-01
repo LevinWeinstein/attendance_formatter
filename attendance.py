@@ -117,7 +117,8 @@ class Attendance:
         
     def __str__(self):
         """ convert the Attendance to string """
-        return "\n".join([str(person) for person in self._attendees])
+        attendees = sorted(self._attendees, key=lambda person: person.email)
+        return "\n".join([str(person) for person in attendees])
 
 
 if __name__ == '__main__':

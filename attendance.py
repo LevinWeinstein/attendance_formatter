@@ -1,9 +1,11 @@
+#! /usr/bin/env python3
+
 """
 Filename     : attendance.py
 Author       : Levin Weinstein
 Organization : USF CS212 Spring 2021
 Purpose      : Convert a directory full of attendance lists to a single, aggregated attendance sheet
-Usage        : python3 ./attendance.py ${ATTENDANCE_DIRECTORY} > ${OUTPUT_FILE}
+Usage        : ./attendance.py ${ATTENDANCE_DIRECTORY} > ${OUTPUT_FILE}
 """
 
 import os
@@ -120,7 +122,7 @@ class Attendance:
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print("Usage: python3 ./attendance.py ${ATTENDANCE DIRECTORY}")
+        print("Usage: ./attendance.py ${ATTENDANCE DIRECTORY}")
     else:
         directory = sys.argv[1]
 

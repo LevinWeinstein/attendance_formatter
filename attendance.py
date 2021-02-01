@@ -74,28 +74,28 @@ class Attendance:
         :param filename: the name of the file
         """
         local_attendance = Attendance(self.event_type)
-        #try: 
-        with open(filename) as f:
-            at_names = False
+        try: 
+            with open(filename) as f:
+                at_names = False
 
-            # Skip the lines above the whitespace, since they are not names
-            next(f) # skip the top part header line
+                # Skip the lines above the whitespace, since they are not names
+                next(f) # skip the top part header line
 
-            _, topic, _, _, _, _, _, _ = next(f).split(',')
-            print(topic, file=sys.stderr)
+                _, topic, _, _, _, _, _, _ = next(f).split(',')
+                print(topic, file=sys.stderr)
 
-            if self.event_type not in topic.lower():
-                print(f"Wrong event type. Skipping {filename}", file=sys.stderr)
-                return           
-            next(f) # Skip the blank line
-            next(f) # Skip the header line with the title "Name", "Email", etc
+                if self.event_type not in topic.lower():
+                    print(f"Wrong event type. Skipping {filename}", file=sys.stderr)
+                    return           
+                next(f) # Skip the blank line
+                next(f) # Skip the header line with the title "Name", "Email", etc
 
-            for line in f:
-                local_attendance.add_attendee(line)
+                for line in f:
+                    local_attendance.add_attendee(line)
 
-        self.merge(local_attendance)
-        #except:
-        #    print(f"Error parsing file: {filename}")
+            self.merge(local_attendance)
+        except:
+            print(f"Error parsing file: {filename}")
 
     
     def add_all_files(self, root_directory):

@@ -14,4 +14,4 @@ By default, the output goes to a terminal. To output to a file, simple use a red
 <br />
 `./attendance_formatter.py -d=Documents/this_weeks_lecture --event=lecture > lecture_attendance.txt`
 <br />
-`./attendance_formatter.py -d=Documents/this_weeks_lab --even=lab > lab_attendance.txt`
+`./attendance_formatter.py -d=Documents/this_weeks_lab -e=lab > lab_attendance.txt`

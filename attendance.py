@@ -54,8 +54,8 @@ class Attendance:
     
     def add_all_files(self, root_directory):
         for (root, dirs, files) in os.walk(root_directory):
-            for file in files:
-                self.add_file(f"{root}/{file}")
+            for f in files:
+                self.add_file(os.path.join(root, f))
         
     def __str__(self):
         return "\n".join([str(person) for person in self._attendees])

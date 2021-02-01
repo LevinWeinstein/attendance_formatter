@@ -138,4 +138,4 @@ if __name__ == '__main__':
     attendance = Attendance(arguments.event)
     attendance.add_all_files(arguments.directory)
 
-    print(arguments.directory)
+    print(attendance)

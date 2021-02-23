@@ -63,7 +63,12 @@ class Attendance:
         
         :param line: the line from which to parse and add an attendee
         """
-        name, email, _, _ = line.split(',')
+        fields = line.split(',')
+
+        if len(fields) == 4:
+            name, email, _, _ = fields
+        else:
+            name, email, _ = fields
 
         new_attendee = Attendee(name, email)
         self._attendees.add(new_attendee)
@@ -92,8 +97,8 @@ class Attendance:
                     local_attendance.add_attendee(line)
 
             self.merge(local_attendance)
-        except:
-            print(f"Error parsing file: {filename}")
+        except Exception as e:
+            print(f"Error parsing file: {filename}: {e}", file=sys.stderr)
 
     
     def add_all_files(self, root_directory):

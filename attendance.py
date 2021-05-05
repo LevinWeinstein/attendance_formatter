@@ -87,7 +87,9 @@ class Attendance:
                 _, topic, _, _, _, _, _, _ = next(f).split(',')
                 print(topic, file=sys.stderr)
 
-                if self.event_type not in topic.lower():
+                if self.event_type == "lab" and "code review" in topic.lower():
+                    pass 
+                elif self.event_type not in topic.lower():
                     print(f"Wrong event type. Skipping {filename}", file=sys.stderr)
                     return           
                 next(f) # Skip the blank line
